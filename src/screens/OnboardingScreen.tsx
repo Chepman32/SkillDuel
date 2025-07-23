@@ -7,11 +7,13 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useTranslation} from 'react-i18next';
 import {RootStackParamList} from '../types/navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {AuthService} from '../services/authService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 
@@ -65,15 +67,51 @@ const OnboardingScreen: React.FC<Props> = ({navigation}) => {
     }
   };
 
+  const handleSignOut = async () => {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            const result = await AuthService.signOut();
+            if (result.success) {
+              // Navigate back to auth screen
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Auth' as any}],
+              });
+            } else {
+              Alert.alert('Error', 'Failed to sign out. Please try again.');
+            }
+          },
+        },
+      ]
+    );
+  };
+
   const selectedCategoryData = SKILL_CATEGORIES.find(cat => cat.id === selectedCategory);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{t('onboarding.title')}</Text>
-        <Text style={styles.subtitle}>
-          {t('onboarding.subtitle')}
-        </Text>
+        <View style={styles.headerTop}>
+          <View style={styles.headerContent}>
+            <Text style={styles.title}>{t('onboarding.title')}</Text>
+            <Text style={styles.subtitle}>
+              {t('onboarding.subtitle')}
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
+            <Icon name="logout" size={20} color="#ef4444" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -163,6 +201,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 20,
     paddingBottom: 24,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  headerContent: {
+    flex: 1,
+  },
+  signOutButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#fef2f2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#fecaca',
   },
   title: {
     fontSize: 28,

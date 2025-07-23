@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,13 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  Alert,
 } from 'react-native';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {RootTabParamList} from '../types/navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useTranslation} from 'react-i18next';
+import {AuthService} from '../services/authService';
 
 type Props = BottomTabScreenProps<RootTabParamList, 'Profile'>;
 
@@ -45,9 +48,53 @@ const mockRecentActivity = [
   {id: '4', type: 'skill_level_up', description: 'Leveled up in Public Speaking', time: '3 days ago'},
 ];
 
-const ProfileScreen: React.FC<Props> = () => {
+const ProfileScreen: React.FC<Props> = ({navigation}) => {
+  const {t, i18n} = useTranslation();
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language || 'en');
+  
   const winRate = Math.round((mockUserProfile.duels_won / (mockUserProfile.duels_won + mockUserProfile.duels_lost)) * 100);
   const earnedBadges = mockBadges.filter(badge => badge.earned);
+
+  const languages = [
+    {code: 'en', name: 'English', flag: '🇺🇸'},
+    {code: 'de', name: 'Deutsch', flag: '🇩🇪'},
+    {code: 'ru', name: 'Русский', flag: '🇷🇺'},
+    {code: 'zh', name: '中文', flag: '🇨🇳'},
+  ];
+
+  const handleLanguageChange = (languageCode: string) => {
+    setSelectedLanguage(languageCode);
+    i18n.changeLanguage(languageCode);
+  };
+
+  const handleSignOut = async () => {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            const result = await AuthService.signOut();
+            if (result.success) {
+              // Navigate back to auth screen
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Auth' as any}],
+              });
+            } else {
+              Alert.alert('Error', 'Failed to sign out. Please try again.');
+            }
+          },
+        },
+      ]
+    );
+  };
 
   const getActivityIcon = (type: string) => {
     switch (type) {
@@ -180,6 +227,34 @@ const ProfileScreen: React.FC<Props> = () => {
           </View>
         </View>
 
+        {/* Language Selection */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Language</Text>
+          <View style={styles.languageContainer}>
+            {languages.map(language => (
+              <TouchableOpacity
+                key={language.code}
+                style={[
+                  styles.languageButton,
+                  selectedLanguage === language.code && styles.languageButtonSelected,
+                ]}
+                onPress={() => handleLanguageChange(language.code)}
+              >
+                <Text style={styles.languageFlag}>{language.flag}</Text>
+                <Text style={[
+                  styles.languageName,
+                  selectedLanguage === language.code && styles.languageNameSelected,
+                ]}>
+                  {language.name}
+                </Text>
+                {selectedLanguage === language.code && (
+                  <Icon name="check" size={20} color="#6366f1" />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
         {/* Account Actions */}
         <View style={styles.section}>
           <TouchableOpacity style={styles.actionButton}>
@@ -200,7 +275,10 @@ const ProfileScreen: React.FC<Props> = () => {
             <Icon name="chevron-right" size={20} color="#9ca3af" />
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.actionButton, styles.signOutButton]}>
+          <TouchableOpacity 
+            style={[styles.actionButton, styles.signOutButton]}
+            onPress={handleSignOut}
+          >
             <Icon name="logout" size={20} color="#ef4444" />
             <Text style={[styles.actionButtonText, styles.signOutText]}>Sign Out</Text>
           </TouchableOpacity>
@@ -448,6 +526,44 @@ const styles = StyleSheet.create({
   },
   signOutText: {
     color: '#ef4444',
+  },
+  languageContainer: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  languageButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    backgroundColor: 'white',
+  },
+  languageButtonSelected: {
+    borderColor: '#6366f1',
+    backgroundColor: '#f0f9ff',
+  },
+  languageFlag: {
+    fontSize: 20,
+    marginRight: 12,
+  },
+  languageName: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#374151',
+  },
+  languageNameSelected: {
+    color: '#6366f1',
+    fontWeight: '600',
   },
 });
 

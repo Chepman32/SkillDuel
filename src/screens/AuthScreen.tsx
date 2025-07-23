@@ -52,8 +52,16 @@ const AuthScreen: React.FC<Props> = ({navigation}) => {
 
   const handleGuestLogin = async () => {
     console.log('Guest login pressed');
-    // For demo mode, just navigate directly
-    navigation.navigate('Onboarding');
+    const result = await AuthService.signInAsGuest();
+    
+    if (result.success) {
+      console.log('Guest sign in successful');
+      // Navigate to onboarding since we're in demo mode
+      navigation.navigate('Onboarding');
+    } else {
+      console.error('Guest sign in failed:', result.error);
+      // Could show an alert or toast here
+    }
   };
 
   return (
