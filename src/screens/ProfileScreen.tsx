@@ -121,7 +121,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Profile</Text>
+          <Text style={styles.title}>{t('profile.title', 'Profile')}</Text>
           <TouchableOpacity style={styles.settingsButton}>
             <Icon name="settings" size={24} color="#6b7280" />
           </TouchableOpacity>
@@ -142,9 +142,9 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
           <Text style={styles.email}>{mockUserProfile.email}</Text>
           
           <View style={styles.levelContainer}>
-            <Text style={styles.levelText}>Level {mockUserProfile.level}</Text>
+            <Text style={styles.levelText}>{t('profile.level', 'Level')} {mockUserProfile.level}</Text>
             <View style={styles.xpContainer}>
-              <Text style={styles.xpText}>{mockUserProfile.xp_total} XP</Text>
+              <Text style={styles.xpText}>{mockUserProfile.xp_total} {t('profile.xp', 'XP')}</Text>
             </View>
           </View>
         </View>
@@ -153,25 +153,25 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
             <Text style={styles.statNumber}>{mockUserProfile.duels_won}</Text>
-            <Text style={styles.statLabel}>Duels Won</Text>
+            <Text style={styles.statLabel}>{t('profile.duelsWon', 'Duels Won')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statNumber}>{winRate}%</Text>
-            <Text style={styles.statLabel}>Win Rate</Text>
+            <Text style={styles.statLabel}>{t('profile.winRate', 'Win Rate')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statNumber}>{mockUserProfile.streak}</Text>
-            <Text style={styles.statLabel}>Day Streak</Text>
+            <Text style={styles.statLabel}>{t('profile.dayStreak', 'Day Streak')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statNumber}>{earnedBadges.length}</Text>
-            <Text style={styles.statLabel}>Badges</Text>
+            <Text style={styles.statLabel}>{t('profile.badges', 'Badges')}</Text>
           </View>
         </View>
 
         {/* Badges */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Badges</Text>
+          <Text style={styles.sectionTitle}>{t('profile.badges', 'Badges')}</Text>
           <View style={styles.badgesContainer}>
             {mockBadges.map(badge => (
               <View 
@@ -204,7 +204,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
 
         {/* Recent Activity */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent Activity</Text>
+          <Text style={styles.sectionTitle}>{t('profile.recentActivity', 'Recent Activity')}</Text>
           <View style={styles.activityContainer}>
             {mockRecentActivity.map(activity => (
               <View key={activity.id} style={styles.activityItem}>
@@ -229,7 +229,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
 
         {/* Language Selection */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Language</Text>
+          <Text style={styles.sectionTitle}>{t('profile.language', 'Language')}</Text>
           <View style={styles.languageContainer}>
             {languages.map(language => (
               <TouchableOpacity
@@ -259,19 +259,19 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
         <View style={styles.section}>
           <TouchableOpacity style={styles.actionButton}>
             <Icon name="edit" size={20} color="#6366f1" />
-            <Text style={styles.actionButtonText}>Edit Profile</Text>
+            <Text style={styles.actionButtonText}>{t('profile.editProfile', 'Edit Profile')}</Text>
             <Icon name="chevron-right" size={20} color="#9ca3af" />
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton}>
             <Icon name="notifications" size={20} color="#6366f1" />
-            <Text style={styles.actionButtonText}>Notifications</Text>
+            <Text style={styles.actionButtonText}>{t('profile.notifications', 'Notifications')}</Text>
             <Icon name="chevron-right" size={20} color="#9ca3af" />
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton}>
             <Icon name="help" size={20} color="#6366f1" />
-            <Text style={styles.actionButtonText}>Help & Support</Text>
+            <Text style={styles.actionButtonText}>{t('profile.helpSupport', 'Help & Support')}</Text>
             <Icon name="chevron-right" size={20} color="#9ca3af" />
           </TouchableOpacity>
           
@@ -280,7 +280,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
             onPress={handleSignOut}
           >
             <Icon name="logout" size={20} color="#ef4444" />
-            <Text style={[styles.actionButtonText, styles.signOutText]}>Sign Out</Text>
+            <Text style={[styles.actionButtonText, styles.signOutText]}>{t('profile.signOut', 'Sign Out')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

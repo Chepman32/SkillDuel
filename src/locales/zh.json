@@ -116,7 +116,15 @@
     "rank": "排名 #{{rank}}",
     "badges": "徽章",
     "earnedBadges": "获得 {{count}} 个徽章",
-    "recentActivity": "最近活动"
+    "recentActivity": "最近活动",
+    "level": "等级",
+    "xp": "经验",
+    "winRate": "胜率",
+    "dayStreak": "连续天数",
+    "language": "语言",
+    "notifications": "通知",
+    "helpSupport": "帮助与支持",
+    "signOut": "退出登录"
   },
   "leaderboard": {
     "title": "排行榜",

@@ -116,7 +116,15 @@
     "rank": "Rank #{{rank}}",
     "badges": "Badges",
     "earnedBadges": "{{count}} badges earned",
-    "recentActivity": "Recent Activity"
+    "recentActivity": "Recent Activity",
+    "level": "Level",
+    "xp": "XP",
+    "winRate": "Win Rate",
+    "dayStreak": "Day Streak",
+    "language": "Language",
+    "notifications": "Notifications",
+    "helpSupport": "Help & Support",
+    "signOut": "Sign Out"
   },
   "leaderboard": {
     "title": "Leaderboard",

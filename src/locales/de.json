@@ -116,7 +116,15 @@
     "rank": "Rang #{{rank}}",
     "badges": "Abzeichen",
     "earnedBadges": "{{count}} Abzeichen erhalten",
-    "recentActivity": "Kürzliche Aktivität"
+    "recentActivity": "Kürzliche Aktivität",
+    "level": "Level",
+    "xp": "EP",
+    "winRate": "Gewinnrate",
+    "dayStreak": "Tage Serie",
+    "language": "Sprache",
+    "notifications": "Benachrichtigungen",
+    "helpSupport": "Hilfe & Support",
+    "signOut": "Abmelden"
   },
   "leaderboard": {
     "title": "Rangliste",
