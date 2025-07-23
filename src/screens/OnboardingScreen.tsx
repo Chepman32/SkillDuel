@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useTranslation} from 'react-i18next';
 import {RootStackParamList} from '../types/navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -52,6 +53,7 @@ const SKILL_CATEGORIES = [
 ];
 
 const OnboardingScreen: React.FC<Props> = ({navigation}) => {
+  const {t} = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
 
@@ -68,9 +70,9 @@ const OnboardingScreen: React.FC<Props> = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Choose Your First Skill</Text>
+        <Text style={styles.title}>{t('onboarding.title')}</Text>
         <Text style={styles.subtitle}>
-          Pick a category and skill to start your learning journey
+          {t('onboarding.subtitle')}
         </Text>
       </View>
 

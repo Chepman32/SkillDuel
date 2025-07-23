@@ -1,0 +1,166 @@
+{
+  "common": {
+    "continue": "Weiter",
+    "next": "Weiter",
+    "back": "Zurück",
+    "skip": "Überspringen",
+    "done": "Fertig",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "retry": "Wiederholen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "close": "Schließen"
+  },
+  "auth": {
+    "welcome": "Willkommen bei SkillDuel",
+    "subtitle": "Meistere jede Fähigkeit, fordere die Welt heraus",
+    "signInWithGoogle": "Mit Google anmelden",
+    "signInWithApple": "Mit Apple anmelden",
+    "signInGuest": "Als Gast fortfahren",
+    "signingIn": "Anmeldung läuft...",
+    "signOut": "Abmelden",
+    "signOutConfirm": "Sind Sie sicher, dass Sie sich abmelden möchten?"
+  },
+  "onboarding": {
+    "title": "Wählen Sie Ihre Fähigkeiten",
+    "subtitle": "Wählen Sie die Fähigkeiten aus, die Sie meistern möchten",
+    "skillCategories": {
+      "technology": "Technologie",
+      "lifeSkills": "Lebenskompetenzen",
+      "artsCreative": "Kunst & Kreativität",
+      "fitnessHealth": "Fitness & Gesundheit"
+    },
+    "skills": {
+      "javascript": "JavaScript",
+      "reactNative": "React Native",
+      "python": "Python",
+      "publicSpeaking": "Öffentliches Sprechen",
+      "leadership": "Führung",
+      "photography": "Fotografie",
+      "guitar": "Gitarre",
+      "fitness": "Fitness",
+      "cooking": "Kochen"
+    },
+    "selectAtLeast": "Wählen Sie mindestens {{count}} Fähigkeiten zum Fortfahren",
+    "getStarted": "Loslegen"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": "Hallo, {{name}}!",
+    "guestGreeting": "Hallo, Gast!",
+    "dailyChallenge": "Tägliche Herausforderung",
+    "yourProgress": "Ihr Fortschritt",
+    "todaysChallenge": "Heutige Herausforderung",
+    "startChallenge": "Herausforderung starten",
+    "challengeCompleted": "Herausforderung abgeschlossen!",
+    "streakDays": "{{count}} Tage Serie",
+    "totalXP": "{{xp}} EP",
+    "level": "Level {{level}}",
+    "quickActions": "Schnellaktionen",
+    "findDuel": "Duell finden",
+    "viewProfile": "Profil anzeigen",
+    "leaderboard": "Rangliste",
+    "achievements": "Erfolge"
+  },
+  "challenge": {
+    "title": "Herausforderung",
+    "instructions": "Anweisungen",
+    "timeLimit": "Zeitlimit: {{minutes}} Minuten",
+    "startRecording": "Aufnahme starten",
+    "stopRecording": "Aufnahme stoppen",
+    "submitChallenge": "Herausforderung einreichen",
+    "recording": "Aufnahme läuft...",
+    "successCriteria": "Erfolgskriterien",
+    "estimatedTime": "Geschätzte Zeit: {{minutes}} Min",
+    "xpReward": "{{xp}} EP Belohnung",
+    "difficulty": {
+      "beginner": "Anfänger",
+      "intermediate": "Fortgeschritten",
+      "advanced": "Experte"
+    }
+  },
+  "duel": {
+    "title": "Duell-Arena",
+    "findOpponent": "Gegner finden",
+    "createDuel": "Duell erstellen",
+    "joinDuel": "Duell beitreten",
+    "activeDuels": "Aktive Duelle",
+    "duelHistory": "Duell-Verlauf",
+    "searching": "Suche nach Gegnern...",
+    "opponentFound": "Gegner gefunden!",
+    "waitingForOpponent": "Warten auf Gegner...",
+    "duelStarted": "Duell gestartet!",
+    "submitEntry": "Beitrag einreichen",
+    "viewResults": "Ergebnisse anzeigen",
+    "winner": "Gewinner",
+    "you": "Sie",
+    "opponent": "Gegner",
+    "score": "Punkte: {{score}}",
+    "completionTime": "Zeit: {{time}}s"
+  },
+  "profile": {
+    "title": "Profil",
+    "editProfile": "Profil bearbeiten",
+    "statistics": "Statistiken",
+    "achievements": "Erfolge",
+    "settings": "Einstellungen",
+    "totalXP": "Gesamt EP",
+    "currentStreak": "Aktuelle Serie",
+    "challengesCompleted": "Abgeschlossene Herausforderungen",
+    "duelsWon": "Gewonnene Duelle",
+    "skillsLearned": "Erlernte Fähigkeiten",
+    "rank": "Rang #{{rank}}",
+    "badges": "Abzeichen",
+    "earnedBadges": "{{count}} Abzeichen erhalten",
+    "recentActivity": "Kürzliche Aktivität"
+  },
+  "leaderboard": {
+    "title": "Rangliste",
+    "global": "Global",
+    "friends": "Freunde",
+    "thisWeek": "Diese Woche",
+    "thisMonth": "Dieser Monat",
+    "allTime": "Gesamt",
+    "yourRank": "Ihr Rang: #{{rank}}",
+    "topPlayers": "Top-Spieler"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "notifications": "Benachrichtigungen",
+    "privacy": "Datenschutz",
+    "about": "Über",
+    "version": "Version {{version}}",
+    "languages": {
+      "en": "English",
+      "de": "Deutsch",
+      "ru": "Русский",
+      "zh": "中文"
+    },
+    "notificationTypes": {
+      "dailyReminders": "Tägliche Erinnerungen",
+      "duelInvites": "Duell-Einladungen",
+      "achievements": "Erfolgs-Benachrichtigungen"
+    }
+  },
+  "errors": {
+    "networkError": "Netzwerkverbindung erforderlich",
+    "serverError": "Serverfehler aufgetreten",
+    "authError": "Authentifizierung fehlgeschlagen",
+    "permissionDenied": "Berechtigung verweigert",
+    "cameraPermission": "Kamera-Berechtigung für Videoaufnahme erforderlich",
+    "microphonePermission": "Mikrofon-Berechtigung für Audioaufnahme erforderlich",
+    "storagePermission": "Speicher-Berechtigung zum Speichern von Aufnahmen erforderlich"
+  },
+  "success": {
+    "challengeCompleted": "Herausforderung erfolgreich abgeschlossen!",
+    "profileUpdated": "Profil erfolgreich aktualisiert",
+    "settingsSaved": "Einstellungen erfolgreich gespeichert",
+    "duelCreated": "Duell erfolgreich erstellt",
+    "duelJoined": "Duell erfolgreich beigetreten"
+  }
+} 

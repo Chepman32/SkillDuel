@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,11 @@ import {
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useTranslation} from 'react-i18next';
+import {useQuery} from '@tanstack/react-query';
 import {RootTabParamList, RootStackParamList} from '../types/navigation';
+import {useAuthStore} from '../stores/authStore';
+import {DataService, Challenge, UserSkill} from '../services/dataService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type Props = CompositeScreenProps<
@@ -21,35 +25,37 @@ type Props = CompositeScreenProps<
 
 const {width} = Dimensions.get('window');
 
-// Mock data - replace with real data from Supabase
-const mockUser = {
-  username: 'Alex',
-  xp_total: 1250,
-  level: 5,
-  streak: 7,
-};
-
-const mockDailyChallenge = {
-  id: '1',
-  title: '5-Minute JavaScript Array Methods',
-  skill: 'JavaScript',
-  difficulty: 'Beginner',
-  estimated_time: '5 min',
-  xp_reward: 50,
-  completed: false,
-};
-
-const mockActiveSkills = [
-  {id: '1', name: 'JavaScript', level: 3, progress: 65, color: '#f7df1e'},
-  {id: '2', name: 'Public Speaking', level: 2, progress: 30, color: '#10b981'},
-  {id: '3', name: 'Photography', level: 1, progress: 80, color: '#f59e0b'},
-];
-
 const DashboardScreen: React.FC<Props> = ({navigation}) => {
+  const {t} = useTranslation();
+  const {user, userProfile} = useAuthStore();
+  
+  // Get user stats
+  const {data: userStats} = useQuery({
+    queryKey: ['userStats', userProfile?.user_id],
+    queryFn: () => userProfile ? DataService.getUserStats(userProfile.user_id) : null,
+    enabled: !!userProfile,
+  });
+
+  // Get daily challenge
+  const {data: dailyChallenge} = useQuery({
+    queryKey: ['dailyChallenge', userProfile?.user_id],
+    queryFn: () => userProfile ? DataService.getDailyChallenge(userProfile.user_id) : null,
+    enabled: !!userProfile,
+  });
+
+  // Get user skills
+  const {data: userSkills} = useQuery({
+    queryKey: ['userSkills', userProfile?.user_id],
+    queryFn: () => userProfile ? DataService.getUserSkills(userProfile.user_id) : [],
+    enabled: !!userProfile,
+  });
+
   const handleStartChallenge = () => {
-    navigation.navigate('ChallengeDetail', {
-      challengeId: mockDailyChallenge.id,
-    });
+    if (dailyChallenge) {
+      navigation.navigate('ChallengeDetail', {
+        challengeId: dailyChallenge.challenge_id,
+      });
+    }
   };
 
   const handleStartDuel = () => {
@@ -63,7 +69,7 @@ const DashboardScreen: React.FC<Props> = ({navigation}) => {
         <View style={styles.header}>
           <View>
             <Text style={styles.greeting}>Good morning,</Text>
-            <Text style={styles.username}>{mockUser.username}!</Text>
+            <Text style={styles.username}>{t('dashboard.greeting', {name: userProfile?.username || 'Guest'})}</Text>
           </View>
           <TouchableOpacity style={styles.profileButton}>
             <Icon name="person" size={24} color="#6366f1" />
@@ -74,57 +80,63 @@ const DashboardScreen: React.FC<Props> = ({navigation}) => {
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
             <Icon name="emoji-events" size={24} color="#f59e0b" />
-            <Text style={styles.statValue}>{mockUser.xp_total}</Text>
-            <Text style={styles.statLabel}>Total XP</Text>
+            <Text style={styles.statValue}>{userStats?.totalXP || 0}</Text>
+            <Text style={styles.statLabel}>{t('dashboard.totalXP')}</Text>
           </View>
           <View style={styles.statCard}>
             <Icon name="trending-up" size={24} color="#10b981" />
-            <Text style={styles.statValue}>Level {mockUser.level}</Text>
+            <Text style={styles.statValue}>{t('dashboard.level', {level: userStats?.level || 1})}</Text>
             <Text style={styles.statLabel}>Current Level</Text>
           </View>
           <View style={styles.statCard}>
             <Icon name="local-fire-department" size={24} color="#ef4444" />
-            <Text style={styles.statValue}>{mockUser.streak}</Text>
-            <Text style={styles.statLabel}>Day Streak</Text>
+            <Text style={styles.statValue}>{userStats?.currentStreak || 0}</Text>
+            <Text style={styles.statLabel}>{t('dashboard.streakDays', {count: userStats?.currentStreak || 0})}</Text>
           </View>
         </View>
 
         {/* Daily Challenge */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Today's Challenge</Text>
-          <TouchableOpacity 
-            style={styles.challengeCard}
-            onPress={handleStartChallenge}>
-            <View style={styles.challengeHeader}>
-              <View style={styles.challengeInfo}>
-                <Text style={styles.challengeTitle}>{mockDailyChallenge.title}</Text>
-                <Text style={styles.challengeSkill}>{mockDailyChallenge.skill}</Text>
+          <Text style={styles.sectionTitle}>{t('dashboard.todaysChallenge')}</Text>
+          {dailyChallenge ? (
+            <TouchableOpacity 
+              style={styles.challengeCard}
+              onPress={handleStartChallenge}>
+              <View style={styles.challengeHeader}>
+                <View style={styles.challengeInfo}>
+                  <Text style={styles.challengeTitle}>{dailyChallenge.title}</Text>
+                  <Text style={styles.challengeSkill}>Challenge</Text>
+                </View>
+                <View style={styles.challengeReward}>
+                  <Icon name="stars" size={20} color="#f59e0b" />
+                  <Text style={styles.xpText}>{dailyChallenge.xp_reward} XP</Text>
+                </View>
               </View>
-              <View style={styles.challengeReward}>
-                <Icon name="stars" size={20} color="#f59e0b" />
-                <Text style={styles.xpText}>{mockDailyChallenge.xp_reward} XP</Text>
+              <View style={styles.challengeDetails}>
+                <View style={styles.challengeMetaItem}>
+                  <Icon name="schedule" size={16} color="#6b7280" />
+                  <Text style={styles.challengeMetaText}>{dailyChallenge.estimated_time_minutes} min</Text>
+                </View>
+                <View style={styles.challengeMetaItem}>
+                  <Icon name="speed" size={16} color="#6b7280" />
+                  <Text style={styles.challengeMetaText}>{t(`challenge.difficulty.${dailyChallenge.difficulty.toLowerCase()}`)}</Text>
+                </View>
               </View>
+              <View style={styles.startButtonContainer}>
+                <Text style={styles.startButtonText}>{t('dashboard.startChallenge')}</Text>
+                <Icon name="play-arrow" size={20} color="white" />
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.challengeCard}>
+              <Text style={styles.challengeTitle}>Loading today's challenge...</Text>
             </View>
-            <View style={styles.challengeDetails}>
-              <View style={styles.challengeMetaItem}>
-                <Icon name="schedule" size={16} color="#6b7280" />
-                <Text style={styles.challengeMetaText}>{mockDailyChallenge.estimated_time}</Text>
-              </View>
-              <View style={styles.challengeMetaItem}>
-                <Icon name="speed" size={16} color="#6b7280" />
-                <Text style={styles.challengeMetaText}>{mockDailyChallenge.difficulty}</Text>
-              </View>
-            </View>
-            <View style={styles.startButtonContainer}>
-              <Text style={styles.startButtonText}>Start Challenge</Text>
-              <Icon name="play-arrow" size={20} color="white" />
-            </View>
-          </TouchableOpacity>
+          )}
         </View>
 
         {/* Quick Actions */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>{t('dashboard.quickActions')}</Text>
           <View style={styles.actionsContainer}>
             <TouchableOpacity 
               style={[styles.actionButton, {backgroundColor: '#ef4444'}]}
@@ -142,29 +154,39 @@ const DashboardScreen: React.FC<Props> = ({navigation}) => {
         {/* Active Skills */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Your Skills</Text>
-          {mockActiveSkills.map(skill => (
-            <View key={skill.id} style={styles.skillCard}>
-              <View style={styles.skillHeader}>
-                <View style={[styles.skillIcon, {backgroundColor: skill.color}]} />
-                <View style={styles.skillInfo}>
-                  <Text style={styles.skillName}>{skill.name}</Text>
-                  <Text style={styles.skillLevel}>Level {skill.level}</Text>
+          {userSkills && userSkills.length > 0 ? (
+            userSkills.map((userSkill, index) => {
+              const progress = Math.min((userSkill.xp_in_skill % 100), 100);
+              const skillColors = ['#f7df1e', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+              const color = skillColors[index % skillColors.length];
+              
+              return (
+                <View key={userSkill.user_skill_id} style={styles.skillCard}>
+                  <View style={styles.skillHeader}>
+                    <View style={[styles.skillIcon, {backgroundColor: color}]} />
+                    <View style={styles.skillInfo}>
+                      <Text style={styles.skillName}>{userSkill.skills?.name || 'Unknown Skill'}</Text>
+                      <Text style={styles.skillLevel}>Level {userSkill.current_level}</Text>
+                    </View>
+                    <Text style={styles.skillProgress}>{progress}%</Text>
+                  </View>
+                  <View style={styles.progressBarContainer}>
+                    <View 
+                      style={[
+                        styles.progressBar, 
+                        {
+                          width: `${progress}%`,
+                          backgroundColor: color,
+                        }
+                      ]} 
+                    />
+                  </View>
                 </View>
-                <Text style={styles.skillProgress}>{skill.progress}%</Text>
-              </View>
-              <View style={styles.progressBarContainer}>
-                <View 
-                  style={[
-                    styles.progressBar, 
-                    {
-                      width: `${skill.progress}%`,
-                      backgroundColor: skill.color,
-                    }
-                  ]} 
-                />
-              </View>
-            </View>
-          ))}
+              );
+            })
+          ) : (
+            <Text style={styles.challengeTitle}>No skills selected yet. Start with onboarding!</Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

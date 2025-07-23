@@ -1,0 +1,166 @@
+{
+  "common": {
+    "continue": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "done": "Done",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close"
+  },
+  "auth": {
+    "welcome": "Welcome to SkillDuel",
+    "subtitle": "Master any skill, challenge the world",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithApple": "Sign in with Apple",
+    "signInGuest": "Continue as Guest",
+    "signingIn": "Signing in...",
+    "signOut": "Sign Out",
+    "signOutConfirm": "Are you sure you want to sign out?"
+  },
+  "onboarding": {
+    "title": "Choose Your Skills",
+    "subtitle": "Select the skills you want to master",
+    "skillCategories": {
+      "technology": "Technology",
+      "lifeSkills": "Life Skills",
+      "artsCreative": "Arts & Creative",
+      "fitnessHealth": "Fitness & Health"
+    },
+    "skills": {
+      "javascript": "JavaScript",
+      "reactNative": "React Native",
+      "python": "Python",
+      "publicSpeaking": "Public Speaking",
+      "leadership": "Leadership",
+      "photography": "Photography",
+      "guitar": "Guitar",
+      "fitness": "Fitness",
+      "cooking": "Cooking"
+    },
+    "selectAtLeast": "Select at least {{count}} skills to continue",
+    "getStarted": "Get Started"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": "Hello, {{name}}!",
+    "guestGreeting": "Hello, Guest!",
+    "dailyChallenge": "Daily Challenge",
+    "yourProgress": "Your Progress",
+    "todaysChallenge": "Today's Challenge",
+    "startChallenge": "Start Challenge",
+    "challengeCompleted": "Challenge Completed!",
+    "streakDays": "{{count}} day streak",
+    "totalXP": "{{xp}} XP",
+    "level": "Level {{level}}",
+    "quickActions": "Quick Actions",
+    "findDuel": "Find Duel",
+    "viewProfile": "View Profile",
+    "leaderboard": "Leaderboard",
+    "achievements": "Achievements"
+  },
+  "challenge": {
+    "title": "Challenge",
+    "instructions": "Instructions",
+    "timeLimit": "Time Limit: {{minutes}} minutes",
+    "startRecording": "Start Recording",
+    "stopRecording": "Stop Recording",
+    "submitChallenge": "Submit Challenge",
+    "recording": "Recording...",
+    "successCriteria": "Success Criteria",
+    "estimatedTime": "Estimated time: {{minutes}} min",
+    "xpReward": "{{xp}} XP Reward",
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    }
+  },
+  "duel": {
+    "title": "Duel Arena",
+    "findOpponent": "Find Opponent",
+    "createDuel": "Create Duel",
+    "joinDuel": "Join Duel",
+    "activeDuels": "Active Duels",
+    "duelHistory": "Duel History",
+    "searching": "Searching for opponents...",
+    "opponentFound": "Opponent Found!",
+    "waitingForOpponent": "Waiting for opponent...",
+    "duelStarted": "Duel Started!",
+    "submitEntry": "Submit Entry",
+    "viewResults": "View Results",
+    "winner": "Winner",
+    "you": "You",
+    "opponent": "Opponent",
+    "score": "Score: {{score}}",
+    "completionTime": "Time: {{time}}s"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "statistics": "Statistics",
+    "achievements": "Achievements",
+    "settings": "Settings",
+    "totalXP": "Total XP",
+    "currentStreak": "Current Streak",
+    "challengesCompleted": "Challenges Completed",
+    "duelsWon": "Duels Won",
+    "skillsLearned": "Skills Learned",
+    "rank": "Rank #{{rank}}",
+    "badges": "Badges",
+    "earnedBadges": "{{count}} badges earned",
+    "recentActivity": "Recent Activity"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "global": "Global",
+    "friends": "Friends",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "allTime": "All Time",
+    "yourRank": "Your Rank: #{{rank}}",
+    "topPlayers": "Top Players"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "about": "About",
+    "version": "Version {{version}}",
+    "languages": {
+      "en": "English",
+      "de": "Deutsch",
+      "ru": "Русский",
+      "zh": "中文"
+    },
+    "notificationTypes": {
+      "dailyReminders": "Daily Challenge Reminders",
+      "duelInvites": "Duel Invitations",
+      "achievements": "Achievement Notifications"
+    }
+  },
+  "errors": {
+    "networkError": "Network connection required",
+    "serverError": "Server error occurred",
+    "authError": "Authentication failed",
+    "permissionDenied": "Permission denied",
+    "cameraPermission": "Camera permission required for video recording",
+    "microphonePermission": "Microphone permission required for audio recording",
+    "storagePermission": "Storage permission required to save recordings"
+  },
+  "success": {
+    "challengeCompleted": "Challenge completed successfully!",
+    "profileUpdated": "Profile updated successfully",
+    "settingsSaved": "Settings saved successfully",
+    "duelCreated": "Duel created successfully",
+    "duelJoined": "Joined duel successfully"
+  }
+} 

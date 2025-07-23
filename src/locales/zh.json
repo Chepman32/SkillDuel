@@ -1,0 +1,166 @@
+{
+  "common": {
+    "continue": "继续",
+    "next": "下一步",
+    "back": "返回",
+    "skip": "跳过",
+    "done": "完成",
+    "cancel": "取消",
+    "confirm": "确认",
+    "loading": "加载中...",
+    "error": "错误",
+    "retry": "重试",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "close": "关闭"
+  },
+  "auth": {
+    "welcome": "欢迎来到 SkillDuel",
+    "subtitle": "掌握任何技能，挑战世界",
+    "signInWithGoogle": "使用 Google 登录",
+    "signInWithApple": "使用 Apple 登录",
+    "signInGuest": "游客继续",
+    "signingIn": "正在登录...",
+    "signOut": "退出",
+    "signOutConfirm": "确定要退出吗？"
+  },
+  "onboarding": {
+    "title": "选择您的技能",
+    "subtitle": "选择您想要掌握的技能",
+    "skillCategories": {
+      "technology": "技术",
+      "lifeSkills": "生活技能",
+      "artsCreative": "艺术创意",
+      "fitnessHealth": "健身健康"
+    },
+    "skills": {
+      "javascript": "JavaScript",
+      "reactNative": "React Native",
+      "python": "Python",
+      "publicSpeaking": "公共演讲",
+      "leadership": "领导力",
+      "photography": "摄影",
+      "guitar": "吉他",
+      "fitness": "健身",
+      "cooking": "烹饪"
+    },
+    "selectAtLeast": "请至少选择 {{count}} 项技能以继续",
+    "getStarted": "开始"
+  },
+  "dashboard": {
+    "title": "仪表板",
+    "greeting": "你好，{{name}}！",
+    "guestGreeting": "你好，游客！",
+    "dailyChallenge": "每日挑战",
+    "yourProgress": "您的进度",
+    "todaysChallenge": "今日挑战",
+    "startChallenge": "开始挑战",
+    "challengeCompleted": "挑战完成！",
+    "streakDays": "{{count}} 天连续",
+    "totalXP": "{{xp}} 经验值",
+    "level": "等级 {{level}}",
+    "quickActions": "快捷操作",
+    "findDuel": "寻找对决",
+    "viewProfile": "查看资料",
+    "leaderboard": "排行榜",
+    "achievements": "成就"
+  },
+  "challenge": {
+    "title": "挑战",
+    "instructions": "说明",
+    "timeLimit": "时间限制：{{minutes}} 分钟",
+    "startRecording": "开始录制",
+    "stopRecording": "停止录制",
+    "submitChallenge": "提交挑战",
+    "recording": "录制中...",
+    "successCriteria": "成功标准",
+    "estimatedTime": "预计时间：{{minutes}} 分钟",
+    "xpReward": "{{xp}} 经验值奖励",
+    "difficulty": {
+      "beginner": "初级",
+      "intermediate": "中级",
+      "advanced": "高级"
+    }
+  },
+  "duel": {
+    "title": "对决竞技场",
+    "findOpponent": "寻找对手",
+    "createDuel": "创建对决",
+    "joinDuel": "加入对决",
+    "activeDuels": "活跃对决",
+    "duelHistory": "对决历史",
+    "searching": "正在寻找对手...",
+    "opponentFound": "找到对手！",
+    "waitingForOpponent": "等待对手...",
+    "duelStarted": "对决开始！",
+    "submitEntry": "提交参赛",
+    "viewResults": "查看结果",
+    "winner": "获胜者",
+    "you": "您",
+    "opponent": "对手",
+    "score": "得分：{{score}}",
+    "completionTime": "时间：{{time}}秒"
+  },
+  "profile": {
+    "title": "个人资料",
+    "editProfile": "编辑资料",
+    "statistics": "统计",
+    "achievements": "成就",
+    "settings": "设置",
+    "totalXP": "总经验值",
+    "currentStreak": "当前连续",
+    "challengesCompleted": "完成的挑战",
+    "duelsWon": "获胜的对决",
+    "skillsLearned": "已学技能",
+    "rank": "排名 #{{rank}}",
+    "badges": "徽章",
+    "earnedBadges": "获得 {{count}} 个徽章",
+    "recentActivity": "最近活动"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "global": "全球",
+    "friends": "好友",
+    "thisWeek": "本周",
+    "thisMonth": "本月",
+    "allTime": "历史总计",
+    "yourRank": "您的排名：#{{rank}}",
+    "topPlayers": "顶级玩家"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "notifications": "通知",
+    "privacy": "隐私",
+    "about": "关于",
+    "version": "版本 {{version}}",
+    "languages": {
+      "en": "English",
+      "de": "Deutsch",
+      "ru": "Русский",
+      "zh": "中文"
+    },
+    "notificationTypes": {
+      "dailyReminders": "每日提醒",
+      "duelInvites": "对决邀请",
+      "achievements": "成就通知"
+    }
+  },
+  "errors": {
+    "networkError": "需要网络连接",
+    "serverError": "服务器错误",
+    "authError": "认证失败",
+    "permissionDenied": "权限被拒绝",
+    "cameraPermission": "需要相机权限进行视频录制",
+    "microphonePermission": "需要麦克风权限进行音频录制",
+    "storagePermission": "需要存储权限保存录制内容"
+  },
+  "success": {
+    "challengeCompleted": "挑战成功完成！",
+    "profileUpdated": "资料更新成功",
+    "settingsSaved": "设置保存成功",
+    "duelCreated": "对决创建成功",
+    "duelJoined": "成功加入对决"
+  }
+} 

@@ -12,6 +12,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AppNavigator from './src/navigation/AppNavigator';
 import {queryClient} from './src/services/queryClient';
 import {useAuthStore} from './src/stores/authStore';
+import './src/services/i18n'; // Initialize i18n
 
 const AppContent: React.FC = () => {
   const initializeAuth = useAuthStore(state => state.initializeAuth);

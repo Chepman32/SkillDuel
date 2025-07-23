@@ -8,23 +8,51 @@ import {
   Image,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useTranslation} from 'react-i18next';
 import {RootStackParamList} from '../types/navigation';
+import {AuthService} from '../services/authService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Auth'>;
 
 const AuthScreen: React.FC<Props> = ({navigation}) => {
-  const handleGoogleLogin = () => {
-    // TODO: Implement Google authentication
-    console.log('Google login pressed');
-    // For now, navigate directly to onboarding
-    navigation.navigate('Onboarding');
+  const {t} = useTranslation();
+
+  // Test if translations are working
+  const testTranslation = (key: string, fallback: string) => {
+    const translation = t(key);
+    return translation === key ? fallback : translation;
   };
 
-  const handleAppleLogin = () => {
-    // TODO: Implement Apple authentication
+  const handleGoogleLogin = async () => {
+    console.log('Google login pressed');
+    const result = await AuthService.signInWithGoogle();
+    
+    if (result.success) {
+      // Navigation will be handled by the auth state change listener
+      console.log('Google sign in successful');
+    } else {
+      console.error('Google sign in failed:', result.error);
+      // Could show an alert or toast here
+    }
+  };
+
+  const handleAppleLogin = async () => {
     console.log('Apple login pressed');
-    // For now, navigate directly to onboarding
+    const result = await AuthService.signInWithApple();
+    
+    if (result.success) {
+      // Navigation will be handled by the auth state change listener
+      console.log('Apple sign in successful');
+    } else {
+      console.error('Apple sign in failed:', result.error);
+      // Could show an alert or toast here
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    console.log('Guest login pressed');
+    // For demo mode, just navigate directly
     navigation.navigate('Onboarding');
   };
 
@@ -37,19 +65,24 @@ const AuthScreen: React.FC<Props> = ({navigation}) => {
             <Icon name="sports-esports" size={80} color="#6366f1" />
           </View>
           <Text style={styles.appName}>SkillDuel</Text>
-          <Text style={styles.tagline}>Master any skill, challenge the world</Text>
+          <Text style={styles.tagline}>{testTranslation('auth.subtitle', 'Master any skill, challenge the world')}</Text>
         </View>
 
         {/* Login buttons */}
         <View style={styles.loginSection}>
           <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
             <Icon name="login" size={20} color="#4285f4" />
-            <Text style={styles.googleButtonText}>Continue with Google</Text>
+            <Text style={styles.googleButtonText}>{testTranslation('auth.signInWithGoogle', 'Sign in with Google')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.appleButton} onPress={handleAppleLogin}>
             <Icon name="apple" size={20} color="white" />
-            <Text style={styles.appleButtonText}>Continue with Apple</Text>
+            <Text style={styles.appleButtonText}>{testTranslation('auth.signInWithApple', 'Sign in with Apple')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.guestButton} onPress={handleGuestLogin}>
+            <Icon name="person-outline" size={20} color="#6366f1" />
+            <Text style={styles.guestButtonText}>{testTranslation('auth.signInGuest', 'Continue as Guest')}</Text>
           </TouchableOpacity>
 
           <Text style={styles.termsText}>
@@ -139,6 +172,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'white',
+  },
+  guestButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#6366f1',
+    gap: 12,
+  },
+  guestButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#6366f1',
   },
   termsText: {
     fontSize: 12,

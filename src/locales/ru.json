@@ -1,0 +1,166 @@
+{
+  "common": {
+    "continue": "Продолжить",
+    "next": "Далее",
+    "back": "Назад",
+    "skip": "Пропустить",
+    "done": "Готово",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "retry": "Повторить",
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "close": "Закрыть"
+  },
+  "auth": {
+    "welcome": "Добро пожаловать в SkillDuel",
+    "subtitle": "Освойте любой навык, бросьте вызов миру",
+    "signInWithGoogle": "Войти через Google",
+    "signInWithApple": "Войти через Apple",
+    "signInGuest": "Продолжить как гость",
+    "signingIn": "Вход в систему...",
+    "signOut": "Выйти",
+    "signOutConfirm": "Вы уверены, что хотите выйти?"
+  },
+  "onboarding": {
+    "title": "Выберите ваши навыки",
+    "subtitle": "Выберите навыки, которые хотите освоить",
+    "skillCategories": {
+      "technology": "Технологии",
+      "lifeSkills": "Жизненные навыки",
+      "artsCreative": "Искусство и творчество",
+      "fitnessHealth": "Фитнес и здоровье"
+    },
+    "skills": {
+      "javascript": "JavaScript",
+      "reactNative": "React Native",
+      "python": "Python",
+      "publicSpeaking": "Публичные выступления",
+      "leadership": "Лидерство",
+      "photography": "Фотография",
+      "guitar": "Гитара",
+      "fitness": "Фитнес",
+      "cooking": "Кулинария"
+    },
+    "selectAtLeast": "Выберите минимум {{count}} навыков для продолжения",
+    "getStarted": "Начать"
+  },
+  "dashboard": {
+    "title": "Панель управления",
+    "greeting": "Привет, {{name}}!",
+    "guestGreeting": "Привет, Гость!",
+    "dailyChallenge": "Ежедневный вызов",
+    "yourProgress": "Ваш прогресс",
+    "todaysChallenge": "Сегодняшний вызов",
+    "startChallenge": "Начать вызов",
+    "challengeCompleted": "Вызов завершён!",
+    "streakDays": "Серия {{count}} дней",
+    "totalXP": "{{xp}} опыта",
+    "level": "Уровень {{level}}",
+    "quickActions": "Быстрые действия",
+    "findDuel": "Найти дуэль",
+    "viewProfile": "Посмотреть профиль",
+    "leaderboard": "Таблица лидеров",
+    "achievements": "Достижения"
+  },
+  "challenge": {
+    "title": "Вызов",
+    "instructions": "Инструкции",
+    "timeLimit": "Лимит времени: {{minutes}} минут",
+    "startRecording": "Начать запись",
+    "stopRecording": "Остановить запись",
+    "submitChallenge": "Отправить вызов",
+    "recording": "Идёт запись...",
+    "successCriteria": "Критерии успеха",
+    "estimatedTime": "Приблизительное время: {{minutes}} мин",
+    "xpReward": "Награда: {{xp}} опыта",
+    "difficulty": {
+      "beginner": "Новичок",
+      "intermediate": "Средний",
+      "advanced": "Продвинутый"
+    }
+  },
+  "duel": {
+    "title": "Арена дуэлей",
+    "findOpponent": "Найти соперника",
+    "createDuel": "Создать дуэль",
+    "joinDuel": "Присоединиться к дуэли",
+    "activeDuels": "Активные дуэли",
+    "duelHistory": "История дуэлей",
+    "searching": "Поиск соперников...",
+    "opponentFound": "Соперник найден!",
+    "waitingForOpponent": "Ожидание соперника...",
+    "duelStarted": "Дуэль началась!",
+    "submitEntry": "Отправить участие",
+    "viewResults": "Посмотреть результаты",
+    "winner": "Победитель",
+    "you": "Вы",
+    "opponent": "Соперник",
+    "score": "Счёт: {{score}}",
+    "completionTime": "Время: {{time}}с"
+  },
+  "profile": {
+    "title": "Профиль",
+    "editProfile": "Редактировать профиль",
+    "statistics": "Статистика",
+    "achievements": "Достижения",
+    "settings": "Настройки",
+    "totalXP": "Общий опыт",
+    "currentStreak": "Текущая серия",
+    "challengesCompleted": "Завершённые вызовы",
+    "duelsWon": "Выигранные дуэли",
+    "skillsLearned": "Изученные навыки",
+    "rank": "Ранг #{{rank}}",
+    "badges": "Значки",
+    "earnedBadges": "Получено {{count}} значков",
+    "recentActivity": "Недавняя активность"
+  },
+  "leaderboard": {
+    "title": "Таблица лидеров",
+    "global": "Глобальная",
+    "friends": "Друзья",
+    "thisWeek": "Эта неделя",
+    "thisMonth": "Этот месяц",
+    "allTime": "Всё время",
+    "yourRank": "Ваш ранг: #{{rank}}",
+    "topPlayers": "Лучшие игроки"
+  },
+  "settings": {
+    "title": "Настройки",
+    "language": "Язык",
+    "notifications": "Уведомления",
+    "privacy": "Конфиденциальность",
+    "about": "О приложении",
+    "version": "Версия {{version}}",
+    "languages": {
+      "en": "English",
+      "de": "Deutsch",
+      "ru": "Русский",
+      "zh": "中文"
+    },
+    "notificationTypes": {
+      "dailyReminders": "Ежедневные напоминания",
+      "duelInvites": "Приглашения на дуэли",
+      "achievements": "Уведомления о достижениях"
+    }
+  },
+  "errors": {
+    "networkError": "Требуется подключение к сети",
+    "serverError": "Произошла ошибка сервера",
+    "authError": "Ошибка аутентификации",
+    "permissionDenied": "Доступ запрещён",
+    "cameraPermission": "Требуется разрешение камеры для записи видео",
+    "microphonePermission": "Требуется разрешение микрофона для записи аудио",
+    "storagePermission": "Требуется разрешение на хранение для сохранения записей"
+  },
+  "success": {
+    "challengeCompleted": "Вызов успешно завершён!",
+    "profileUpdated": "Профиль успешно обновлён",
+    "settingsSaved": "Настройки успешно сохранены",
+    "duelCreated": "Дуэль успешно создана",
+    "duelJoined": "Успешно присоединились к дуэли"
+  }
+} 
