@@ -1,97 +1,222 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# SkillDuel - Master any skill, challenge the world
 
-# Getting Started
+SkillDuel is a gamified learning platform that transforms educational content into competitive, AI-powered challenges. Users can learn new skills through daily micro-challenges and compete against friends and rivals in skill-based duels.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 🚀 Features Implemented
 
-## Step 1: Start Metro
+### ✅ Core Navigation & UI
+- **Authentication Flow**: Social login with Google/Apple placeholders
+- **Onboarding**: Skill category selection with beautiful carousel UI
+- **Bottom Tab Navigation**: Home, Duel, and Profile tabs
+- **Screen Stack**: Challenge details, recording, and results screens
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### ✅ Main Screens
+- **Dashboard**: Daily challenges, user stats, skill progress tracking
+- **Duel System**: Skill selection, opponent matching, active duel management
+- **Profile**: User stats, badges, recent activity, settings
+- **Challenge Detail**: Instructions, success criteria, tips, and examples
+- **Recording**: Camera interface with criteria checklist and progress tracking
+- **Duel Results**: Side-by-side comparison with AI feedback and sharing
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### ✅ Technical Foundation
+- **React Navigation**: Stack and bottom tab navigators with TypeScript
+- **State Management**: Zustand for client state, TanStack Query for server state
+- **Supabase Integration**: Database schema, authentication, and client setup
+- **Modern UI**: Clean, responsive design with React Native Vector Icons
 
-```sh
-# Using npm
-npm start
+## 🛠 Tech Stack
 
-# OR using Yarn
-yarn start
+- **Frontend**: React Native CLI (not Expo)
+- **Navigation**: React Navigation v7
+- **State Management**: Zustand + TanStack Query
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Icons**: React Native Vector Icons (Material Icons)
+- **Package Manager**: Yarn
+
+## 📱 Database Schema
+
+The app implements a comprehensive database schema with the following entities:
+- `users` - User profiles and authentication data
+- `skills` - Available skills with categories and metadata
+- `user_skills` - User progress in specific skills
+- `challenges` - Learning challenges with AI judging criteria
+- `challenge_submissions` - User submissions with AI scoring
+- `duels` - Competitive matches between users
+- `duel_participants` - Individual submissions within duels
+
+## 🔧 Setup Instructions
+
+### Prerequisites
+- Node.js 18+
+- React Native development environment
+- iOS: Xcode, CocoaPods
+- Android: Android Studio, Java JDK
+- Yarn package manager
+
+### 1. Installation
+
+```bash
+# Navigate to the project directory
+cd SkillDuel
+
+# Install dependencies
+yarn install
+
+# iOS setup
+cd ios && pod install && cd ..
 ```
 
-## Step 2: Build and run your app
+### 2. Supabase Configuration
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+1. Create a new Supabase project at [supabase.com](https://supabase.com)
+2. Copy your project URL and anon key
+3. Update `src/services/supabase.ts`:
 
-### Android
+```typescript
+const supabaseUrl = 'YOUR_SUPABASE_URL';
+const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+```
 
-```sh
-# Using npm
-npm run android
+4. Run the database schema setup in your Supabase SQL editor:
 
-# OR using Yarn
+```sql
+-- Create users table
+CREATE TABLE users (
+    user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    auth_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    profile_avatar_url TEXT,
+    xp_total INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Create skills table
+CREATE TABLE skills (
+    skill_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    category VARCHAR(50) NOT NULL,
+    icon_url TEXT,
+    is_premium BOOLEAN DEFAULT FALSE
+);
+
+-- Create user_skills table
+CREATE TABLE user_skills (
+    user_skill_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
+    skill_id UUID REFERENCES skills(skill_id) ON DELETE CASCADE,
+    current_level INTEGER DEFAULT 1,
+    xp_in_skill INTEGER DEFAULT 0
+);
+
+-- Create challenges table
+CREATE TABLE challenges (
+    challenge_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    skill_id UUID REFERENCES skills(skill_id) ON DELETE CASCADE,
+    level INTEGER NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    instruction_video_url TEXT,
+    ai_judging_prompt TEXT
+);
+
+-- Create challenge_submissions table
+CREATE TABLE challenge_submissions (
+    submission_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
+    challenge_id UUID REFERENCES challenges(challenge_id) ON DELETE CASCADE,
+    submission_video_url TEXT,
+    ai_score INTEGER,
+    ai_feedback_text TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Create duels table
+CREATE TABLE duels (
+    duel_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    challenge_id UUID REFERENCES challenges(challenge_id) ON DELETE CASCADE,
+    status TEXT DEFAULT 'pending',
+    winner_id UUID REFERENCES users(user_id),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Create duel_participants table
+CREATE TABLE duel_participants (
+    participant_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    duel_id UUID REFERENCES duels(duel_id) ON DELETE CASCADE,
+    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
+    submission_video_url TEXT,
+    score INTEGER
+);
+```
+
+### 3. Running the App
+
+```bash
+# Start Metro bundler
+yarn start
+
+# Run on iOS (in a new terminal)
+yarn ios
+
+# Run on Android (in a new terminal)
 yarn android
 ```
 
-### iOS
+## 🏗 Project Structure
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```
+src/
+├── components/         # Reusable UI components
+├── navigation/         # Navigation configuration
+├── screens/           # Screen components
+├── services/          # API clients and utilities
+├── stores/            # Zustand state stores
+├── types/             # TypeScript type definitions
+└── utils/             # Helper functions
 ```
 
-Then, and every time you update your native dependencies, run:
+## 🎯 Next Steps for Full Implementation
 
-```sh
-bundle exec pod install
-```
+### Authentication & Social Login
+- [ ] Implement Google OAuth integration
+- [ ] Implement Apple Sign-In
+- [ ] Add email/password authentication fallback
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### Media & Camera
+- [ ] Integrate react-native-camera for video recording
+- [ ] Implement video upload to Supabase Storage
+- [ ] Add video playback with react-native-video
 
-```sh
-# Using npm
-npm run ios
+### AI Integration
+- [ ] OpenAI GPT-4 Vision API for challenge scoring
+- [ ] AssemblyAI for speech analysis
+- [ ] Real-time AI feedback generation
 
-# OR using Yarn
-yarn ios
-```
+### Core Features
+- [ ] Real-time duel notifications with Supabase Realtime
+- [ ] In-app purchases with RevenueCat
+- [ ] Push notifications for challenges and duels
+- [ ] Skill tree progression system
+- [ ] Leaderboards and social features
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Polish & Production
+- [ ] Error handling and loading states
+- [ ] Offline support and caching
+- [ ] Performance optimization
+- [ ] Testing (unit, integration, e2e)
+- [ ] App store deployment
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## 🤝 Contributing
 
-## Step 3: Modify your app
+This is a comprehensive foundation for the SkillDuel app. The core navigation, state management, and UI components are implemented with mock data. To continue development:
 
-Now that you have successfully run the app, let's make changes!
+1. Set up your Supabase backend
+2. Replace mock data with real API calls
+3. Implement camera and video functionality
+4. Add AI integration for challenge scoring
+5. Enhance UI with animations and micro-interactions
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## 📄 License
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This project is part of a development demonstration. Please refer to your specific licensing requirements.
