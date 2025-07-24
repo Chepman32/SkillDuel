@@ -29,8 +29,11 @@ const AuthScreen: React.FC<Props> = ({navigation}) => {
     const result = await AuthService.signInWithGoogle();
     
     if (result.success) {
-      // Navigation will be handled by the auth state change listener
       console.log('Google sign in successful');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Onboarding' }],
+      });
     } else {
       console.error('Google sign in failed:', result.error);
       // Could show an alert or toast here
@@ -56,8 +59,10 @@ const AuthScreen: React.FC<Props> = ({navigation}) => {
     
     if (result.success) {
       console.log('Guest sign in successful');
-      // Navigate to onboarding since we're in demo mode
-      navigation.navigate('Onboarding');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Onboarding' }],
+      });
     } else {
       console.error('Guest sign in failed:', result.error);
       // Could show an alert or toast here

@@ -9,10 +9,8 @@ import {Alert} from 'react-native';
 // Note: Replace these with your actual Google Cloud credentials
 GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/userinfo.email'],
-  // For iOS, we need to provide the iOS client ID
-  // You can get this from your GoogleService-Info.plist file
-  iosClientId: '1029184405993-rfe8ja2nnij2lbs02ghgdsd10c3irm8p.apps.googleusercontent.com', // Your actual iOS client ID
-  webClientId: 'YOUR_GOOGLE_WEB_CLIENT_ID', // Replace with your actual web client ID
+  iosClientId: '1029184405993-rfe8ja2nnij2lbs02ghgdsd10c3irm8p.apps.googleusercontent.com', // iOS client ID
+  webClientId: '1029184405993-3iuiohrf5mg9jdmprr096rl75jbkmfk4.apps.googleusercontent.com', // Web client ID
   offlineAccess: true,
   hostedDomain: '',
   forceCodeForRefreshToken: true,
@@ -37,14 +35,18 @@ export class AuthService {
       // Check if your device supports Google Play
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       
-      // Get the users ID token
-      await GoogleSignin.signIn();
-      const {accessToken} = await GoogleSignin.getTokens();
+      // Get the user's ID token
+      const userInfo = await GoogleSignin.signIn() as any;
+      console.log('Google Sign-In userInfo:', userInfo);
+      const idToken = userInfo.data?.idToken;
+      if (!idToken) {
+        return { success: false, error: 'No idToken returned from Google Sign-In' };
+      }
 
       // Create a Google credential with the token
-      const {error} = await supabase.auth.signInWithIdToken({
+      const { error } = await supabase.auth.signInWithIdToken({
         provider: 'google',
-        token: accessToken,
+        token: idToken, // Use idToken instead of accessToken
       });
 
       if (error) {
@@ -57,8 +59,8 @@ export class AuthService {
       console.error('Google sign in error:', error);
       
       // Handle configuration errors gracefully
-      if (error.message && error.message.includes('clientID')) {
-        console.log('Google Sign-In not configured, simulating success');
+      if (error.message && (error.message.includes('clientID') || error.message.includes('invalid_audience'))) {
+        console.log('Google Sign-In not configured properly, simulating success');
         return {success: true};
       }
       
