@@ -18,7 +18,10 @@ export type RootStackParamList = {
 
 export type RootTabParamList = {
   Home: undefined;
-  Duel: undefined;
+  Duel: {
+    selectedSkillId?: string;
+  };
+  Skills: undefined;
   Profile: undefined;
 };
 

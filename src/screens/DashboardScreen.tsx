@@ -62,6 +62,10 @@ const DashboardScreen: React.FC<Props> = ({navigation}) => {
     navigation.navigate('Duel');
   };
 
+  const handleBrowseSkills = () => {
+    navigation.navigate('Skills');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -144,7 +148,9 @@ const DashboardScreen: React.FC<Props> = ({navigation}) => {
               <Icon name="sports-esports" size={32} color="white" />
               <Text style={styles.actionButtonText}>Start Duel</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.actionButton, {backgroundColor: '#10b981'}]}>
+            <TouchableOpacity 
+              style={[styles.actionButton, {backgroundColor: '#10b981'}]}
+              onPress={handleBrowseSkills}>
               <Icon name="library-books" size={32} color="white" />
               <Text style={styles.actionButtonText}>Browse Skills</Text>
             </TouchableOpacity>

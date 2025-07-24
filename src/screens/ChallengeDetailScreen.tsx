@@ -9,41 +9,60 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types/navigation';
+import {getRandomChallengeForSkill, getChallengeById, Challenge} from '../data/challenges';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChallengeDetail'>;
-
-// Mock challenge data
-const mockChallenge = {
-  id: '1',
-  title: '5-Minute JavaScript Array Methods',
-  skill: 'JavaScript',
-  level: 1,
-  difficulty: 'Beginner',
-  estimated_time: '5 min',
-  xp_reward: 50,
-  description: 'Master the essential JavaScript array methods by implementing filter, map, and reduce operations on a dataset.',
-  instruction_video_url: null,
-  success_criteria: [
-    'Use the filter() method to remove items from an array',
-    'Use the map() method to transform array elements',
-    'Use the reduce() method to calculate a single value',
-    'Complete the task within 5 minutes',
-    'Write clean, readable code with proper syntax',
-  ],
-  example_code: `// Example: Filter even numbers
-const numbers = [1, 2, 3, 4, 5, 6];
-const evenNumbers = numbers.filter(num => num % 2 === 0);
-console.log(evenNumbers); // [2, 4, 6]`,
-};
 
 const ChallengeDetailScreen: React.FC<Props> = ({navigation, route}) => {
   const {challengeId, skillId} = route.params;
   const isDuel = skillId !== undefined;
 
+  // Get the appropriate challenge
+  let challenge: Challenge | undefined;
+  
+  if (isDuel && skillId) {
+    // For duels, get a random challenge for the selected skill
+    challenge = getRandomChallengeForSkill(skillId);
+  } else {
+    // For regular challenges, try to get by ID first, then fallback to random
+    challenge = getChallengeById(challengeId) || getRandomChallengeForSkill(skillId || '1');
+  }
+
+  // Fallback challenge if none found
+  const fallbackChallenge: Challenge = {
+    id: 'fallback',
+    title: 'JavaScript Array Methods Mastery',
+    skill: 'JavaScript',
+    skillId: '1',
+    level: 1,
+    difficulty: 'Beginner',
+    estimated_time: '5 min',
+    xp_reward: 50,
+    description: 'Master the essential JavaScript array methods by implementing filter, map, and reduce operations on a dataset.',
+    success_criteria: [
+      'Use the filter() method to remove items from an array',
+      'Use the map() method to transform array elements',
+      'Use the reduce() method to calculate a single value',
+      'Complete the task within 5 minutes',
+      'Write clean, readable code with proper syntax',
+    ],
+    example_code: `// Example: Filter even numbers
+const numbers = [1, 2, 3, 4, 5, 6];
+const evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log(evenNumbers); // [2, 4, 6]`,
+    tips: [
+      'Remember that filter() returns a new array',
+      'map() transforms each element',
+      'reduce() accumulates values'
+    ]
+  };
+
+  const currentChallenge = challenge || fallbackChallenge;
+
   const handleStartChallenge = () => {
     navigation.navigate('Record', {
-      challengeId,
+      challengeId: currentChallenge.id,
       isDuel,
       duelId: isDuel ? 'new-duel' : undefined,
     });
@@ -55,25 +74,25 @@ const ChallengeDetailScreen: React.FC<Props> = ({navigation, route}) => {
         {/* Challenge Header */}
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>{mockChallenge.title}</Text>
+            <Text style={styles.title}>{currentChallenge.title}</Text>
             <View style={styles.metaContainer}>
               <View style={styles.metaItem}>
                 <Icon name="code" size={16} color="#6366f1" />
-                <Text style={styles.metaText}>{mockChallenge.skill}</Text>
+                <Text style={styles.metaText}>{currentChallenge.skill}</Text>
               </View>
               <View style={styles.metaItem}>
                 <Icon name="schedule" size={16} color="#6b7280" />
-                <Text style={styles.metaText}>{mockChallenge.estimated_time}</Text>
+                <Text style={styles.metaText}>{currentChallenge.estimated_time}</Text>
               </View>
               <View style={styles.metaItem}>
                 <Icon name="speed" size={16} color="#6b7280" />
-                <Text style={styles.metaText}>{mockChallenge.difficulty}</Text>
+                <Text style={styles.metaText}>{currentChallenge.difficulty}</Text>
               </View>
             </View>
           </View>
           <View style={styles.rewardContainer}>
             <Icon name="stars" size={20} color="#f59e0b" />
-            <Text style={styles.rewardText}>{mockChallenge.xp_reward} XP</Text>
+            <Text style={styles.rewardText}>{currentChallenge.xp_reward} XP</Text>
           </View>
         </View>
 
@@ -88,17 +107,17 @@ const ChallengeDetailScreen: React.FC<Props> = ({navigation, route}) => {
         {/* Description */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Challenge Description</Text>
-          <Text style={styles.description}>{mockChallenge.description}</Text>
+          <Text style={styles.description}>{currentChallenge.description}</Text>
         </View>
 
         {/* Success Criteria */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Success Criteria</Text>
           <View style={styles.criteriaContainer}>
-            {mockChallenge.success_criteria.map((criteria, index) => (
+            {currentChallenge.success_criteria.map((criteria, index) => (
               <View key={index} style={styles.criteriaItem}>
                 <View style={styles.criteriaIcon}>
-                  <Icon name="check-circle-outline" size={20} color="#10b981" />
+                  <Icon name="check-circle" size={16} color="#10b981" />
                 </View>
                 <Text style={styles.criteriaText}>{criteria}</Text>
               </View>
@@ -106,49 +125,43 @@ const ChallengeDetailScreen: React.FC<Props> = ({navigation, route}) => {
           </View>
         </View>
 
-        {/* Example Code */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Example</Text>
-          <View style={styles.codeContainer}>
-            <Text style={styles.codeText}>{mockChallenge.example_code}</Text>
+        {/* Example Code (for programming challenges) */}
+        {currentChallenge.example_code && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Example Code</Text>
+            <View style={styles.codeContainer}>
+              <Text style={styles.codeText}>{currentChallenge.example_code}</Text>
+            </View>
           </View>
-        </View>
+        )}
 
         {/* Tips */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Tips</Text>
-          <View style={styles.tipsContainer}>
-            <View style={styles.tipItem}>
-              <Icon name="lightbulb-outline" size={20} color="#f59e0b" />
-              <Text style={styles.tipText}>
-                Test your code with different input values to ensure it works correctly
-              </Text>
-            </View>
-            <View style={styles.tipItem}>
-              <Icon name="lightbulb-outline" size={20} color="#f59e0b" />
-              <Text style={styles.tipText}>
-                Focus on readability - clean code is as important as functionality
-              </Text>
-            </View>
-            <View style={styles.tipItem}>
-              <Icon name="lightbulb-outline" size={20} color="#f59e0b" />
-              <Text style={styles.tipText}>
-                Don't rush - accuracy is more important than speed
-              </Text>
+        {currentChallenge.tips && currentChallenge.tips.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Tips</Text>
+            <View style={styles.tipsContainer}>
+              {currentChallenge.tips.map((tip, index) => (
+                <View key={index} style={styles.tipItem}>
+                  <View style={styles.tipIcon}>
+                    <Icon name="lightbulb" size={16} color="#f59e0b" />
+                  </View>
+                  <Text style={styles.tipText}>{tip}</Text>
+                </View>
+              ))}
             </View>
           </View>
+        )}
+
+        {/* Start Button */}
+        <View style={styles.startButtonContainer}>
+          <TouchableOpacity style={styles.startButton} onPress={handleStartChallenge}>
+            <Icon name="play-arrow" size={20} color="white" />
+            <Text style={styles.startButtonText}>
+              {isDuel ? 'Start Duel' : 'Start Challenge'}
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
-
-      {/* Start Button */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.startButton} onPress={handleStartChallenge}>
-          <Icon name="videocam" size={20} color="white" />
-          <Text style={styles.startButtonText}>
-            {isDuel ? 'Start Duel Recording' : 'Start Recording Challenge'}
-          </Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };
@@ -293,6 +306,17 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#e5e7eb',
   },
+  startButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
+  },
   startButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -306,6 +330,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'white',
+  },
+  tipIcon: {
+    marginTop: 2,
   },
 });
 

@@ -44,8 +44,9 @@ const mockActiveDuels = [
   },
 ];
 
-const DuelScreen: React.FC<Props> = ({navigation}) => {
-  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+const DuelScreen: React.FC<Props> = ({navigation, route}) => {
+  const {selectedSkillId} = route.params || {};
+  const [selectedSkill, setSelectedSkill] = useState<string | null>(selectedSkillId || null);
 
   const handleSkillSelect = (skillId: string) => {
     setSelectedSkill(skillId);

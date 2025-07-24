@@ -66,6 +66,21 @@
     "leaderboard": "Leaderboard",
     "achievements": "Achievements"
   },
+  "skills": {
+    "title": "Browse Skills",
+    "subtitle": "Choose a skill to master",
+    "allSkills": "All Skills",
+    "startLearning": "Start Learning",
+    "findDuel": "Find Duel",
+    "learners": "learners",
+    "categories": {
+      "all": "All Skills",
+      "technology": "Technology",
+      "lifeSkills": "Life Skills",
+      "artsCreative": "Arts & Creative",
+      "fitnessSports": "Fitness & Sports"
+    }
+  },
   "challenge": {
     "title": "Challenge",
     "instructions": "Instructions",

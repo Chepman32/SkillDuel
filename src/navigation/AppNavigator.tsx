@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 // Screens
 import DashboardScreen from '../screens/DashboardScreen';
 import DuelScreen from '../screens/DuelScreen';
+import SkillsScreen from '../screens/SkillsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ChallengeDetailScreen from '../screens/ChallengeDetailScreen';
 import RecordScreen from '../screens/RecordScreen';
@@ -31,6 +32,8 @@ const TabNavigator = () => {
             iconName = 'home';
           } else if (route.name === 'Duel') {
             iconName = 'sports-esports';
+          } else if (route.name === 'Skills') {
+            iconName = 'library-books';
           } else if (route.name === 'Profile') {
             iconName = 'person';
           } else {
@@ -45,6 +48,7 @@ const TabNavigator = () => {
       })}>
       <Tab.Screen name="Home" component={DashboardScreen} />
       <Tab.Screen name="Duel" component={DuelScreen} />
+      <Tab.Screen name="Skills" component={SkillsScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
