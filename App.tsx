@@ -12,6 +12,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AppNavigator from './src/navigation/AppNavigator';
 import {queryClient} from './src/services/queryClient';
 import {useAuthStore} from './src/stores/authStore';
+import SplashScreenWrapper from './src/components/SplashScreenWrapper';
 import './src/services/i18n'; // Initialize i18n
 
 const AppContent: React.FC = () => {
@@ -29,7 +30,9 @@ const App: React.FC = () => {
     <GestureHandlerRootView style={{flex: 1}}>
       <QueryClientProvider client={queryClient}>
         <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
-        <AppContent />
+        <SplashScreenWrapper>
+          <AppContent />
+        </SplashScreenWrapper>
       </QueryClientProvider>
     </GestureHandlerRootView>
   );
