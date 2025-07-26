@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useTranslation} from 'react-i18next';
@@ -17,6 +18,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Auth'>;
 
 const AuthScreen: React.FC<Props> = ({navigation}) => {
   const {t} = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
 
   // Test if translations are working
   const testTranslation = (key: string, fallback: string) => {
@@ -25,47 +27,77 @@ const AuthScreen: React.FC<Props> = ({navigation}) => {
   };
 
   const handleGoogleLogin = async () => {
-    console.log('Google login pressed');
-    const result = await AuthService.signInWithGoogle();
+    if (isLoading) return;
     
-    if (result.success) {
-      console.log('Google sign in successful');
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Onboarding' }],
-      });
-    } else {
-      console.error('Google sign in failed:', result.error);
-      // Could show an alert or toast here
+    setIsLoading(true);
+    console.log('Google login pressed');
+    
+    try {
+      const result = await AuthService.signInWithGoogle();
+      
+      if (result.success) {
+        console.log('Google sign in successful');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Onboarding' }],
+        });
+      } else {
+        console.error('Google sign in failed:', result.error);
+        // Could show an alert or toast here
+      }
+    } catch (error) {
+      console.error('Google login error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleAppleLogin = async () => {
-    console.log('Apple login pressed');
-    const result = await AuthService.signInWithApple();
+    if (isLoading) return;
     
-    if (result.success) {
-      // Navigation will be handled by the auth state change listener
-      console.log('Apple sign in successful');
-    } else {
-      console.error('Apple sign in failed:', result.error);
-      // Could show an alert or toast here
+    setIsLoading(true);
+    console.log('Apple login pressed');
+    
+    try {
+      const result = await AuthService.signInWithApple();
+      
+      if (result.success) {
+        // Navigation will be handled by the auth state change listener
+        console.log('Apple sign in successful');
+      } else {
+        console.error('Apple sign in failed:', result.error);
+        // Could show an alert or toast here
+      }
+    } catch (error) {
+      console.error('Apple login error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGuestLogin = async () => {
-    console.log('Guest login pressed');
-    const result = await AuthService.signInAsGuest();
+    if (isLoading) return;
     
-    if (result.success) {
-      console.log('Guest sign in successful');
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Onboarding' }],
-      });
-    } else {
-      console.error('Guest sign in failed:', result.error);
-      // Could show an alert or toast here
+    setIsLoading(true);
+    console.log('Guest login pressed');
+    
+    try {
+      const result = await AuthService.signInAsGuest();
+      
+      if (result.success) {
+        console.log('Guest sign in successful');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Onboarding' }],
+        });
+      } else {
+        console.error('Guest sign in failed:', result.error);
+        // Could show an alert or toast here
+      }
+    } catch (error) {
+      console.error('Guest login error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,21 +113,59 @@ const AuthScreen: React.FC<Props> = ({navigation}) => {
           <Text style={styles.tagline}>{testTranslation('auth.subtitle', 'Master any skill, challenge the world')}</Text>
         </View>
 
+        {/* Loading indicator */}
+        {isLoading && (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#6366f1" />
+            <Text style={styles.loadingText}>Signing you in...</Text>
+          </View>
+        )}
+
         {/* Login buttons */}
         <View style={styles.loginSection}>
-          <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
-            <Icon name="login" size={20} color="#4285f4" />
-            <Text style={styles.googleButtonText}>{testTranslation('auth.signInWithGoogle', 'Sign in with Google')}</Text>
+          <TouchableOpacity 
+            style={[styles.googleButton, isLoading && styles.disabledButton]} 
+            onPress={handleGoogleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#4285f4" />
+            ) : (
+              <Icon name="login" size={20} color="#4285f4" />
+            )}
+            <Text style={[styles.googleButtonText, isLoading && styles.disabledText]}>
+              {testTranslation('auth.signInWithGoogle', 'Sign in with Google')}
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.appleButton} onPress={handleAppleLogin}>
-            <Icon name="apple" size={20} color="white" />
-            <Text style={styles.appleButtonText}>{testTranslation('auth.signInWithApple', 'Sign in with Apple')}</Text>
+          <TouchableOpacity 
+            style={[styles.appleButton, isLoading && styles.disabledButton]} 
+            onPress={handleAppleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Icon name="apple" size={20} color="white" />
+            )}
+            <Text style={[styles.appleButtonText, isLoading && styles.disabledText]}>
+              {testTranslation('auth.signInWithApple', 'Sign in with Apple')}
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.guestButton} onPress={handleGuestLogin}>
-            <Icon name="person-outline" size={20} color="#6366f1" />
-            <Text style={styles.guestButtonText}>{testTranslation('auth.signInGuest', 'Continue as Guest')}</Text>
+          <TouchableOpacity 
+            style={[styles.guestButton, isLoading && styles.disabledButton]} 
+            onPress={handleGuestLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#6366f1" />
+            ) : (
+              <Icon name="person-outline" size={20} color="#6366f1" />
+            )}
+            <Text style={[styles.guestButtonText, isLoading && styles.disabledText]}>
+              {testTranslation('auth.signInGuest', 'Continue as Guest')}
+            </Text>
           </TouchableOpacity>
 
           <Text style={styles.termsText}>
@@ -151,6 +221,16 @@ const styles = StyleSheet.create({
     marginTop: 8,
     lineHeight: 24,
   },
+  loadingContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#6366f1',
+    marginTop: 12,
+    fontWeight: '500',
+  },
   loginSection: {
     gap: 16,
   },
@@ -202,6 +282,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#6366f1',
+  },
+  disabledButton: {
+    opacity: 0.6,
+  },
+  disabledText: {
+    opacity: 0.6,
   },
   termsText: {
     fontSize: 12,

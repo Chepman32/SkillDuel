@@ -17,7 +17,7 @@ const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
 
   useEffect(() => {
     const startAnimation = () => {
-      // Show full screen splash for 2.5 seconds, then bake to corner
+      // Show full screen splash for 0.5 seconds, then bake to corner
       setTimeout(() => {
         Animated.parallel([
           Animated.spring(scale, {
@@ -49,8 +49,8 @@ const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
           }).start(() => {
             onAnimationComplete();
           });
-        }, 1500);
-      }, 2500);
+        }, 500);
+      }, 500);
     };
 
     startAnimation();
