@@ -14,46 +14,25 @@ import {RootTabParamList} from '../types/navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useTranslation} from 'react-i18next';
 import {AuthService} from '../services/authService';
+import {useAuthStore} from '../stores/authStore';
+import {useQuery} from '@tanstack/react-query';
+import {DataService} from '../services/dataService';
 
 type Props = BottomTabScreenProps<RootTabParamList, 'Profile'>;
 
-// Mock data
-const mockUserProfile = {
-  username: 'Alex_SkillMaster',
-  email: 'alex@example.com',
-  avatar_url: null,
-  xp_total: 1250,
-  level: 5,
-  streak: 7,
-  duels_won: 23,
-  duels_lost: 8,
-  badges_earned: 12,
-  skills_learned: 5,
-  joined_date: '2024-01-15',
-};
-
-const mockBadges = [
-  {id: '1', name: 'First Win', description: 'Won your first duel', icon: 'emoji-events', earned: true},
-  {id: '2', name: 'Speed Demon', description: 'Complete 5 challenges in under 3 minutes', icon: 'flash-on', earned: true},
-  {id: '3', name: 'Streak Master', description: 'Maintain a 7-day streak', icon: 'local-fire-department', earned: true},
-  {id: '4', name: 'Code Ninja', description: 'Master JavaScript fundamentals', icon: 'code', earned: true},
-  {id: '5', name: 'Social Butterfly', description: 'Complete 10 duels', icon: 'people', earned: false},
-  {id: '6', name: 'Perfectionist', description: 'Score 100% on 5 challenges', icon: 'star', earned: false},
-];
-
-const mockRecentActivity = [
-  {id: '1', type: 'duel_win', description: 'Won duel vs CodeMaster_99', time: '2 hours ago'},
-  {id: '2', type: 'challenge_complete', description: 'Completed JavaScript Arrays challenge', time: '1 day ago'},
-  {id: '3', type: 'badge_earned', description: 'Earned "Streak Master" badge', time: '2 days ago'},
-  {id: '4', type: 'skill_level_up', description: 'Leveled up in Public Speaking', time: '3 days ago'},
-];
 
 const ProfileScreen: React.FC<Props> = ({navigation}) => {
   const {t, i18n} = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language || 'en');
-  
-  const winRate = Math.round((mockUserProfile.duels_won / (mockUserProfile.duels_won + mockUserProfile.duels_lost)) * 100);
-  const earnedBadges = mockBadges.filter(badge => badge.earned);
+  const {userProfile} = useAuthStore();
+
+  const {data: userStats} = useQuery({
+    queryKey: ['userStats', userProfile?.user_id],
+    queryFn: () => userProfile ? DataService.getUserStats(userProfile.user_id) : null,
+    enabled: !!userProfile,
+  });
+
+  const earnedBadges: any[] = [];
 
   const languages = [
     {code: 'en', name: 'English', flag: '🇺🇸'},
@@ -130,21 +109,21 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
         {/* Profile Info */}
         <View style={styles.profileCard}>
           <View style={styles.avatarContainer}>
-            {mockUserProfile.avatar_url ? (
-              <Image source={{uri: mockUserProfile.avatar_url}} style={styles.avatar} />
+            {userProfile?.profile_avatar_url ? (
+              <Image source={{uri: userProfile.profile_avatar_url}} style={styles.avatar} />
             ) : (
               <View style={styles.avatarPlaceholder}>
                 <Icon name="person" size={40} color="#6366f1" />
               </View>
             )}
           </View>
-          <Text style={styles.username}>{mockUserProfile.username}</Text>
-          <Text style={styles.email}>{mockUserProfile.email}</Text>
-          
+          <Text style={styles.username}>{userProfile?.username || 'Guest'}</Text>
+          <Text style={styles.email}>{userProfile?.email || ''}</Text>
+
           <View style={styles.levelContainer}>
-            <Text style={styles.levelText}>{t('profile.level', 'Level')} {mockUserProfile.level}</Text>
+            <Text style={styles.levelText}>{t('profile.level', 'Level')} {userStats?.level || 1}</Text>
             <View style={styles.xpContainer}>
-              <Text style={styles.xpText}>{mockUserProfile.xp_total} {t('profile.xp', 'XP')}</Text>
+              <Text style={styles.xpText}>{userStats?.totalXP || 0} {t('profile.xp', 'XP')}</Text>
             </View>
           </View>
         </View>
@@ -152,20 +131,20 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
         {/* Stats */}
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{mockUserProfile.duels_won}</Text>
+            <Text style={styles.statNumber}>{userStats?.totalXP ?? 0}</Text>
+            <Text style={styles.statLabel}>{t('profile.totalXP', 'Total XP')}</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{userStats?.level ?? 1}</Text>
+            <Text style={styles.statLabel}>{t('profile.level', 'Level')}</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{userStats?.currentStreak ?? 0}</Text>
+            <Text style={styles.statLabel}>{t('profile.currentStreak', 'Current Streak')}</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{userStats?.duelsWon ?? 0}</Text>
             <Text style={styles.statLabel}>{t('profile.duelsWon', 'Duels Won')}</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{winRate}%</Text>
-            <Text style={styles.statLabel}>{t('profile.winRate', 'Win Rate')}</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{mockUserProfile.streak}</Text>
-            <Text style={styles.statLabel}>{t('profile.dayStreak', 'Day Streak')}</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{earnedBadges.length}</Text>
-            <Text style={styles.statLabel}>{t('profile.badges', 'Badges')}</Text>
           </View>
         </View>
 
@@ -173,32 +152,20 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('profile.badges', 'Badges')}</Text>
           <View style={styles.badgesContainer}>
-            {mockBadges.map(badge => (
-              <View 
-                key={badge.id} 
-                style={[
-                  styles.badgeItem,
-                  !badge.earned && styles.badgeItemLocked,
-                ]}>
-                <Icon 
-                  name={badge.icon} 
-                  size={24} 
-                  color={badge.earned ? '#f59e0b' : '#9ca3af'} 
-                />
-                <Text style={[
-                  styles.badgeName,
-                  !badge.earned && styles.badgeNameLocked,
-                ]}>
-                  {badge.name}
-                </Text>
-                <Text style={[
-                  styles.badgeDescription,
-                  !badge.earned && styles.badgeDescriptionLocked,
-                ]}>
-                  {badge.description}
-                </Text>
-              </View>
-            ))}
+            {earnedBadges.length > 0 ? (
+              earnedBadges.map(badge => (
+                <View
+                  key={badge.id}
+                  style={[styles.badgeItem]}
+                >
+                  <Icon name="emoji-events" size={24} color="#f59e0b" />
+                  <Text style={styles.badgeName}>{badge.name}</Text>
+                  <Text style={styles.badgeDescription}>{badge.description}</Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.badgeDescription}>No achievements yet.</Text>
+            )}
           </View>
         </View>
 
@@ -206,24 +173,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('profile.recentActivity', 'Recent Activity')}</Text>
           <View style={styles.activityContainer}>
-            {mockRecentActivity.map(activity => (
-              <View key={activity.id} style={styles.activityItem}>
-                <View style={[
-                  styles.activityIcon,
-                  {backgroundColor: getActivityColor(activity.type) + '20'},
-                ]}>
-                  <Icon 
-                    name={getActivityIcon(activity.type)} 
-                    size={20} 
-                    color={getActivityColor(activity.type)} 
-                  />
-                </View>
-                <View style={styles.activityContent}>
-                  <Text style={styles.activityDescription}>{activity.description}</Text>
-                  <Text style={styles.activityTime}>{activity.time}</Text>
-                </View>
-              </View>
-            ))}
+            <Text style={styles.activityDescription}>No recent activity.</Text>
           </View>
         </View>
 
